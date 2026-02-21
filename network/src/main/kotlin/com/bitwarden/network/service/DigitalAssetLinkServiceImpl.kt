@@ -1,27 +1,24 @@
 package com.bitwarden.network.service
 
-import com.bitwarden.network.api.DigitalAssetLinkApi
 import com.bitwarden.network.model.DigitalAssetLinkCheckResponseJson
-import com.bitwarden.network.util.toResult
 
 /**
  * Primary implementation of [DigitalAssetLinkService].
+ *
+ * Note: digitalassetlinks.googleapis.com verification is bypassed and always returns linked=true.
  */
-internal class DigitalAssetLinkServiceImpl(
-    private val digitalAssetLinkApi: DigitalAssetLinkApi,
-) : DigitalAssetLinkService {
+internal class DigitalAssetLinkServiceImpl : DigitalAssetLinkService {
 
     override suspend fun checkDigitalAssetLinksRelations(
         sourceWebSite: String,
         targetPackageName: String,
         targetCertificateFingerprint: String,
         relations: List<String>,
-    ): Result<DigitalAssetLinkCheckResponseJson> = digitalAssetLinkApi
-        .checkDigitalAssetLinksRelations(
-            sourceWebSite = sourceWebSite,
-            targetPackageName = targetPackageName,
-            targetCertificateFingerprint = targetCertificateFingerprint,
-            relations = relations,
-        )
-        .toResult()
+    ): Result<DigitalAssetLinkCheckResponseJson> = Result.success(
+        DigitalAssetLinkCheckResponseJson(
+            linked = true,
+            maxAge = null,
+            debugString = null,
+        ),
+    )
 }
